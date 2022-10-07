@@ -17,6 +17,19 @@ class Seeder extends BaseController
 
     public function prodi()
     {
+        return $this->seeder->call('ProdiSeeder');
+    }
+
+    public function mahasiswa()
+    {
+        return $this->seeder->call('MahasiswaSeeder');
+    }
+
+    public function all()
+    {
         $this->seeder->call('ProdiSeeder');
+        $this->seeder->call('MahasiswaSeeder');
+
+        return redirect()->to('/');
     }
 }

@@ -17,7 +17,7 @@ if (is_file(SYSTEMPATH . 'Config/Routes.php')) {
  * --------------------------------------------------------------------
  */
 $routes->setDefaultNamespace('App\Controllers');
-$routes->setDefaultController('Home');
+$routes->setDefaultController('Mahasiswa');
 $routes->setDefaultMethod('index');
 $routes->setTranslateURIDashes(false);
 $routes->set404Override();
@@ -35,10 +35,15 @@ $routes->setAutoRoute(false);
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->get('/', 'Home::index');
+$routes->get('/', 'Mahasiswa::index');
+
+$routes->group('mahasiswa', function ($routes) {
+    $routes->post('show', 'Mahasiswa::show');
+});
 
 $routes->group('seed', function ($routes) {
     $routes->get('prodi', 'Seeder::prodi');
+    $routes->get('mahasiswa', 'Seeder::mahasiswa');
 });
 
 /*

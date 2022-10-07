@@ -1,0 +1,7 @@
+.validate-error {
+    border-color: #dc3545 !important;
+}
+
+.validate-error:focus {
+    box-shadow: 0 0 0 0.25rem #dc354540 !important;
+}

@@ -9,6 +9,7 @@ class ProdiSeeder extends Seeder
     public function run()
     {
         // kode_prodi, nama_prodi, status, jenjang, akreditasi
+
         $data = [
             [
                 'kode_prodi'    => '55201',
