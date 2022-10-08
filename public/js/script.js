@@ -5,7 +5,29 @@ const elAll = element => document.querySelectorAll(`${element}`)
 const xhr = new XMLHttpRequest
 const date = new Date
 
-// TODO: My Code
+// 
+
+
+// TODO: XHR Ready and Success
+
+
+// 
+
+const xhrReady = func => {
+    xhr.onreadystatechange = () => {
+        if (xhr.status === 200 && xhr.readyState === 4) {
+            func(xhr.response)
+        }
+    }
+}
+
+// 
+
+
+// TODO: Validasi
+
+
+// 
 const validateError = val => {
     el('#tombol-simpan-perubahan').setAttribute('disabled', '')
     return val.classList.add('validate-error')
@@ -44,9 +66,94 @@ el('#mahasiswaPopup').addEventListener('input', e => {
     if (e.target === el('#seleksi_masuk')) return validateLength(e.target, 2)
 })
 
+// 
+
+
+// TODO: Refresh
+
+
+// 
+
+const refresh = () => {
+    xhrReady(function (response) {
+        let data = ''
+        let no = 1
+        JSON.parse(response).forEach(e => {
+            data +=
+                /* html */
+                `
+                <tr>
+                    <td class="text-center">${no}</td>
+                    <td>${e.nama}</td>
+                    <td>${e.nama_prodi}</td>
+                    <td>${e.jenis_kelamin}</td>
+                    <td>${e.alamat}</td>
+                    <td>${e.no_telp}</td>
+                    <td>${e.seleksi_masuk}MPTN - ${parseInt(e.bulan_masuk) - 1}, ${e.tahun_masuk}</td>
+                    <td>
+                        <button type="button" class="btn btn-primary ubah" data-npm="${e.npm}">Ubah</button>
+                        <button type="button" class="btn btn-danger hapus" data-npm="${e.npm}">Hapus</button>
+                    </td>
+                </tr>
+                `
+
+            no++
+        })
+
+        el('.tabel-mahasiswa tbody').innerHTML = data
+
+        Swal.fire(
+            'Berhasil',
+            'Data Mahasiswa Diperbaharui',
+            'success'
+        )
+    })
+
+    xhr.open('POST', `${origin}/mahasiswa/get`, true)
+    xhr.send()
+}
+
+
+// 
+
+
+// TODO: CRUD Succes
+
+
+// 
+
+const crudSuccess = () => {
+    xhrReady(function () {
+        el('#mahasiswaPopup .btn-close').click()
+        refresh()
+    })
+}
+
+// 
+
+
+// TODO: Close button
+
+
+// 
+
+el('#mahasiswaPopup .btn-close').addEventListener('click', () => el('#mahasiswaPopup form').removeAttribute('data-action'))
+el('#mahasiswaPopup #close').addEventListener('click', () => el('#mahasiswaPopup form').removeAttribute('data-action'))
+
+// 
+
+
+// TODO: Save
+
+
+// 
+
 el('#tombol-simpan-perubahan').addEventListener('click', e => {
     const form = e.target.parentElement.parentElement.querySelector('form')
     const dataAction = form.getAttribute('data-action')
+    const npm = {
+        'npm': form.getAttribute('data-npm')
+    }
 
     const data = {
         'nama': form.querySelector('#nama').value,
@@ -60,10 +167,22 @@ el('#tombol-simpan-perubahan').addEventListener('click', e => {
         'seleksi_masuk': form.querySelector('#seleksi_masuk').value
     }
 
-    console.log(dataAction)
+    if (dataAction === 'update') Object.assign(data, npm)
+
+    crudSuccess()
+
+    xhr.open('POST', `${origin}/mahasiswa/${dataAction}`)
+    xhr.send(JSON.stringify(data))
 })
 
-el('#mahasiswaPopup .btn-close').addEventListener('click', () => el('#mahasiswaPopup form').removeAttribute('data-action'))
+
+// 
+
+
+// TODO: Insert
+
+
+// 
 
 el('#tambah-mahasiswa').addEventListener('click', () => {
     el('#mahasiswaPopup form').setAttribute('data-action', 'insert')
@@ -80,10 +199,21 @@ el('#tambah-mahasiswa').addEventListener('click', () => {
     el('#tombol-popup-mahasiswa').click()
 })
 
-const ubahMahasiswa = target => {
-    el('#mahasiswaPopup form').setAttribute('data-action', 'update')
 
+// 
+
+
+// TODO: Update
+
+
+// 
+
+const ubahMahasiswa = target => {
     const npm = target.getAttribute('data-npm')
+
+    el('#mahasiswaPopup form').setAttribute('data-action', 'update')
+    el('#mahasiswaPopup form').setAttribute('data-npm', npm)
+
     const data = {
         'npm': npm
     }
@@ -126,20 +256,28 @@ const ubahMahasiswa = target => {
     }
 
     // TODO: Ambil data mahasiswa berdasarkan NPM
-    xhr.onreadystatechange = () => {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            (xhr.response) ? success(xhr.response): invalid()
-        }
-    }
+    xhrReady(function () {
+        (xhr.response) ? success(xhr.response): invalid()
+    })
 
     xhr.open('POST', `${origin}/mahasiswa/show`, true)
     xhr.send(JSON.stringify(data))
 }
 
+
+// 
+
+
+// TODO: Delete
+
+
+// 
+
+
 const hapusMahasiswa = target => {
     Swal.fire({
         title: 'Apakah Anda Yakin?',
-        text: "Data Akan Dihapus Secara Permanent!",
+        text: "Data Akan Dihapus Secara Permanen!",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -147,12 +285,26 @@ const hapusMahasiswa = target => {
         confirmButtonText: 'Ya, Hapus'
     }).then((result) => {
         if (result.isConfirmed) {
-            const key = target.getAttribute('data-npm')
+            const data = {
+                npm: target.getAttribute('data-npm')
+            }
 
-            console.log(key)
+            crudSuccess()
+
+            xhr.open('POST', `${origin}/mahasiswa/delete`, true)
+            xhr.send(JSON.stringify(data))
         }
     })
 }
+
+
+// 
+
+
+// TODO: Action
+
+
+// 
 
 el('.table').addEventListener('click', e => {
     if (e.target.classList.contains('ubah')) ubahMahasiswa(e.target)

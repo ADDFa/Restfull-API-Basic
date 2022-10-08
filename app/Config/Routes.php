@@ -37,8 +37,14 @@ $routes->setAutoRoute(false);
 // route since we don't have to scan directories.
 $routes->get('/', 'Mahasiswa::index');
 
+$routes->resource('mahasiswaRest');
+
 $routes->group('mahasiswa', function ($routes) {
     $routes->post('show', 'Mahasiswa::show');
+    $routes->post('get', 'Mahasiswa::get');
+    $routes->post('insert', 'Mahasiswa::insert');
+    $routes->post('update', 'Mahasiswa::update');
+    $routes->post('delete', 'Mahasiswa::delete');
 });
 
 $routes->group('seed', function ($routes) {

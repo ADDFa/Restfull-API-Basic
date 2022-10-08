@@ -40,18 +40,42 @@ class Mahasiswa extends BaseController
         return json_encode($res[0]);
     }
 
+    public function data($json)
+    {
+        $data = [
+            'nama' => $json->nama,
+            'npm' => $json->npm,
+            'prodi' => $json->prodi,
+            'jenis_kelamin' => $json->jenis_kelamin,
+            'alamat' => $json->alamat,
+            'no_telp' => $json->no_telp,
+            'tahun_masuk' => $json->tahun_masuk,
+            'bulan_masuk' => $json->bulan_masuk,
+            'seleksi_masuk' => $json->seleksi_masuk
+        ];
+
+        return $data;
+    }
+
+    public function get()
+    {
+        return json_encode($this->mahasiswa->get());
+    }
+
     public function insert()
     {
-        // 
+        return $this->mahasiswa->insert($this->data($this->request->getJSON()));
     }
 
     public function update()
     {
-        // 
+        $npm = $this->request->getJSON()->npm;
+        return $this->mahasiswa->update($npm, $this->data($this->request->getJSON()));
     }
 
     public function delete()
     {
-        // 
+        $npm = $this->request->getJSON()->npm;
+        return $this->mahasiswa->delete($npm);
     }
 }

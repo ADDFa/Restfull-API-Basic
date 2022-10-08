@@ -16,7 +16,7 @@
 
 <div class="row col-md-10 mx-auto">
     <div class="table">
-        <table class="table text-light">
+        <table class="table text-light tabel-mahasiswa">
             <thead>
                 <tr>
                     <th scope="col">Nomor</th>
@@ -38,7 +38,7 @@
                         <td><?= $mahasiswa->jenis_kelamin ?></td>
                         <td><?= $mahasiswa->alamat ?></td>
                         <td><?= $mahasiswa->no_telp ?></td>
-                        <td><?= $mahasiswa->seleksi_masuk . 'MPTN - ' . $bulan[$mahasiswa->bulan_masuk] . ', ' . $mahasiswa->tahun_masuk ?></td>
+                        <td><?= $mahasiswa->seleksi_masuk . 'MPTN - ' . $bulan[(int) $mahasiswa->bulan_masuk - 1] . ', ' . $mahasiswa->tahun_masuk ?></td>
                         <td>
                             <button type="button" class="btn btn-primary ubah" data-npm="<?= $mahasiswa->npm ?>">Ubah</button>
                             <button type="button" class="btn btn-danger hapus" data-npm="<?= $mahasiswa->npm ?>">Hapus</button>
@@ -100,7 +100,7 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-aksi="tambah">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="close">Close</button>
                 <button type="button" id="tombol-simpan-perubahan" class="btn btn-primary" disabled>Simpan</button>
             </div>
         </div>
