@@ -23,4 +23,4 @@
 #### Author
 - Name : Adha Dont Differatama
 - Email : fratamaadha18@gmail.com
-- Instagram : @adha_2d
+- Instagram : https://www.instagram.com/adha_2d/
