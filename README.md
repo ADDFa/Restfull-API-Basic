@@ -8,7 +8,7 @@
 ########## End Points ##########
 
 | Method | Route                                | Handler                                            |
-|--------|:------------------------------------:|---------------------------------------------------:|
+|--------|--------------------------------------|----------------------------------------------------|
 | GET    | mahasiswaRest                        | \App\Controller\MahasiswaRest::index               |
 | GET    | mahasiswaRest/(.*)                   | \App\Controller\MahasiswaRest::show/$1             |
 | POST   | mahasiswaRest                        | \App\Controller\MahasiswaRest::create              |
